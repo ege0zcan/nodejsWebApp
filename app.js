@@ -5,14 +5,27 @@ const { readFileSync } = require('fs');
 const express = require('express');
 const app = express();
 
+//use sessions for tracking logins
+var session = require('express-session');
+app.use(session({
+    secret: 'work hard',
+    resave: true,
+    saveUninitialized: false
+}));
+
 // Mongo
-const MongoClient = require('mongodb').MongoClient;
+const MongoClient = require('mongodb');
 const url = 'mongodb://localhost:27017';
 
 // Body parser
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+app.set('view engine', 'pug');
+app.get('/protected_page', function(req, res){
+    res.render('protected_page', {username: req.session.user.username})
+});
 
 // Create
 app.post('/create', function (req, res) {
@@ -46,7 +59,7 @@ app.post('/create', function (req, res) {
 
 // Login
 app.post('/login', function (req, res) {
-console.log("login");
+    console.log("login");
     var userData = {
         username: req.body.username,
         password: req.body.password,
@@ -56,7 +69,7 @@ console.log("login");
         const db = client.db("covid_app");
         const collection = db.collection('users');
         if (err) throw err;
-        collection.findOne(userData)(function(err, data) {
+        collection.findOne(userData, function(err, data) {
             if (data && !err) {
                 req.session.user = data;
                 console.log(data);
@@ -75,6 +88,4 @@ app.get('/', function (req, res) {
 });
 
 app.listen(3000);
-
-
 
