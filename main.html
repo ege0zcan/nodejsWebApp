@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Maps</title>
+</head>
+<body>
+
+<div class="h-100 d-flex justify-content-center align-items-center">
+    <div class="btn-group-vertical">
+        <h1>Hello, welcome!</h1>
+        <p></p>
+        <button class="btn btn-dark" type="submit" id="login">Login</button>
+        <form method="post" action="/login" id="login_form">
+            <div id="login_div" style="display: none">
+                <div class="form-group">
+                    <label class="badge badge-dark" for="username">Username</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label class="badge badge-dark" for="password">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <button class="btn btn-dark" id="login_submit">Submit</button>
+            </div>
+        </form>
+
+        <p></p>
+        <button class="btn btn-dark" type="submit" id="create"> Create Account</button>
+        <form method="post" action="/create" id="create_form">
+            <div id="create_div" style="display: none">
+                <div class="form-group">
+                    <label class="badge badge-dark" for="new_username">Username</label>
+                    <input type="text" class="form-control" id="new_username" name="new_username" required>
+                </div>
+                <div class="form-group">
+                    <label class="badge badge-dark" for="new_password">Password</label>
+                    <input type="password" class="form-control" id="new_password" name="new_password" required>
+                </div>
+                <div class="form-group">
+                    <label class="badge badge-dark" for="name">Name</label>
+                    <input type="text" class="form-control" id="name" name="name"required>
+                </div>
+                <div class="form-group">
+                    <label class="badge badge-dark" for="age">Age</label>
+                    <input type="number" class="form-control" id="age" name="age" min="0" max="100" step="1" required>
+                </div>
+                <div class="form-group">
+                    <label class="badge badge-dark">Gender</label>
+                    <label class="radio-inline"><input type="radio" name="gender" value="male" required>Male</label>
+                    <label class="radio-inline"><input type="radio" name="gender" value="female" required>Female</label>
+                </div>
+                <button class="btn btn-dark" id="create_submit">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
+
+<script>
+    $('#login').on('click', function(event) {
+        var x = document.getElementById("login_div");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    });
+
+    $('#create').on('click', function(event) {
+        var x = document.getElementById("create_div");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    });
+
+</script>
