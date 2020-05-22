@@ -14,13 +14,12 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-//POST route for updating data
+// Create
 app.post('/create', function (req, res) {
     // Create record
     var userData = {
         username: req.body.new_username,
         password: req.body.new_password,
-        name: req.body.name,
         age: req.body.age,
         gender: req.body.gender
     };
@@ -31,15 +30,21 @@ app.post('/create', function (req, res) {
         const collection = db.collection('users');
         if (err) throw err;
         collection.insertOne(userData, function(error, result) {
-            if (err) throw err;
-            console.log("Inserted document into the collection");
+            if (error){
+                res.status("400");
+                res.send("Invalid details!");
+                throw error;
+            }
+            else{
+                console.log("Inserted document into the collection");
+                req.session.user = data;
+                res.redirect('/protected_page');
+            }
         });
     });
-
-    res.redirect('/profile');
 });
 
-//POST route for updating data
+// Login
 app.post('/login', function (req, res) {
 console.log("login");
     var userData = {
@@ -51,20 +56,21 @@ console.log("login");
         const db = client.db("covid_app");
         const collection = db.collection('users');
         if (err) throw err;
-        collection.insertOne(userData, function(error, result) {
-            if (err) throw err;
-            console.log("Inserted document into the collection");
+        collection.findOne(userData)(function(err, data) {
+            if (data && !err) {
+                req.session.user = data;
+                console.log(data);
+                res.redirect('/protected_page');
+            } else {
+                console.log(err);
+                res.redirect('/');
+            }
         });
     });
-    res.redirect('/profile');
 });
 
 // Main page
 app.get('/', function (req, res) {
-    res.send(readFileSync('./main.html', 'utf8') );
-});
-
-app.get('/profile', function (req, res) {
     res.send(readFileSync('./main.html', 'utf8') );
 });
 
