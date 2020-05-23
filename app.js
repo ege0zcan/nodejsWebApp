@@ -8,7 +8,7 @@ const app = express();
 //use sessions for tracking logins
 var session = require('express-session');
 app.use(session({
-    secret: 'work hard',
+    secret: 'workhard',
     resave: true,
     saveUninitialized: false
 }));
@@ -73,7 +73,8 @@ app.post('/login', function (req, res) {
             if (data && !err) {
                 req.session.user = data;
                 console.log(data);
-                res.redirect('/protected_page');
+                res.redirect('/profile');
+                //res.redirect('/protected_page');
             } else {
                 console.log(err);
                 res.redirect('/');
@@ -87,5 +88,16 @@ app.get('/', function (req, res) {
     res.send(readFileSync('./main.html', 'utf8') );
 });
 
-app.listen(3000);
+// Profile page
+app.get('/profile', function (req, res) {
+    res.send(readFileSync('./profile.html', 'utf8') );
+});
 
+// Test
+app.post('/test', function (req, res) {
+    console.log("alo");
+    console.log(req.session);
+    console.log("bb");
+});
+
+app.listen(3000);
