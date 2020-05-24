@@ -14,6 +14,16 @@ html(lang='en')
                 h3 Your Information
                 h5 Age: #{age}
                 h5 Gender: #{gender}
+                h5 Symptoms
+                if (symptoms.length==0)
+                    label="No symptoms to show"
+                else
+                    each dict in symptoms
+                        each val, key in dict
+                            label.badge.badge-dark= key + ': '
+                            label=val
+                        p
+
                 button#add.btn.btn-dark Add daily symptom
                 p
                 #add_div(style='display: none')

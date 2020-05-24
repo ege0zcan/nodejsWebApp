@@ -18,20 +18,23 @@ const url = 'mongodb://localhost:27017';
 
 // Body parser
 var bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 // Pug
 app.set('view engine', 'pug');
+
+// Profile page using pug template
 app.get('/protected_page', function(req, res){
     var user_name = req.session.user.username;
     var user_age = req.session.user.age;
     var user_gender = req.session.user.gender;
-    var info = {username: user_name, age: user_age, gender: user_gender};
+    var user_symptoms = req.session.user.symptoms;
+    var info = {username: user_name, age: user_age, gender: user_gender, symptoms: user_symptoms};
     res.render('protected_page', info)
 });
 
-// Create
+// Create account
 app.post('/create', function (req, res) {
     // Create record
     var userData = {
@@ -54,7 +57,6 @@ app.post('/create', function (req, res) {
                 throw error;
             }
             else{
-                console.log("Inserted document into the collection");
                 req.session.user = userData;
                 res.redirect('/protected_page');
             }
@@ -64,7 +66,6 @@ app.post('/create', function (req, res) {
 
 // Login
 app.post('/login', function (req, res) {
-    console.log("login");
     var userData = {
         username: req.body.username,
         password: req.body.password,
@@ -98,13 +99,13 @@ app.get('/profile', function (req, res) {
     res.send(readFileSync('./profile.html', 'utf8') );
 });
 
-// Monitor
+// Monitor symptoms
 app.post('/monitor', function (req, res) {
     //todo
     res.redirect('/protected_page');
 });
 
-// Add
+// Add symptom
 app.post('/add', function (req, res) {
     // Add symptoms to user
     MongoClient.connect(url, function(err, client) {
