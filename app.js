@@ -1,4 +1,3 @@
-console.log("Server running at http://127.0.0.1:3000/");
 const { readFileSync } = require('fs');
 
 // Express
@@ -22,9 +21,14 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+// Pug
 app.set('view engine', 'pug');
 app.get('/protected_page', function(req, res){
-    res.render('protected_page', {username: req.session.user.username})
+    var user_name = req.session.user.username;
+    var user_age = req.session.user.age;
+    var user_gender = req.session.user.gender;
+    var info = {username: user_name, age: user_age, gender: user_gender};
+    res.render('protected_page', info)
 });
 
 // Create
@@ -34,7 +38,8 @@ app.post('/create', function (req, res) {
         username: req.body.new_username,
         password: req.body.new_password,
         age: req.body.age,
-        gender: req.body.gender
+        gender: req.body.gender,
+        symptoms : []
     };
 
     // Add record to database
@@ -50,7 +55,7 @@ app.post('/create', function (req, res) {
             }
             else{
                 console.log("Inserted document into the collection");
-                req.session.user = data;
+                req.session.user = userData;
                 res.redirect('/protected_page');
             }
         });
@@ -73,8 +78,8 @@ app.post('/login', function (req, res) {
             if (data && !err) {
                 req.session.user = data;
                 console.log(data);
-                res.redirect('/profile');
-                //res.redirect('/protected_page');
+                //res.redirect('/profile');
+                res.redirect('/protected_page');
             } else {
                 console.log(err);
                 res.redirect('/');
@@ -88,16 +93,33 @@ app.get('/', function (req, res) {
     res.send(readFileSync('./main.html', 'utf8') );
 });
 
-// Profile page
+// Profile page todo delete
 app.get('/profile', function (req, res) {
     res.send(readFileSync('./profile.html', 'utf8') );
 });
 
-// Test
-app.post('/test', function (req, res) {
-    console.log("alo");
-    console.log(req.session);
-    console.log("bb");
+// Monitor
+app.post('/monitor', function (req, res) {
+    //todo
+    res.redirect('/protected_page');
+});
+
+// Add
+app.post('/add', function (req, res) {
+    // Add symptoms to user
+    MongoClient.connect(url, function(err, client) {
+        const db = client.db("covid_app");
+        const collection = db.collection('users');
+        if (err) throw err;
+        var symptom = {date: req.body.date, symptom: req.body.symptom};
+        collection.updateOne({username: req.session.user.username}
+            , { $push: {symptoms:symptom}}, function(err, result) {
+                if(err) throw err;
+            });
+    });
+    // Go back to profile page
+    res.redirect('/protected_page');
 });
 
 app.listen(3000);
+console.log("Server running at http://127.0.0.1:3000/");

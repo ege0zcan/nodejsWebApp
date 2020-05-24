@@ -1,7 +1,62 @@
-html
+doctype html
+html(lang='en')
     head
-        title Protected page
+        meta(charset='UTF-8')
+        title Profile
+        // JQuery
+        script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js')
+        // Bootstrap CSS
+        link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css', integrity='sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh', crossorigin='anonymous')
     body
-        div Hey #{username}, How are you doing today?
-        form(method='GET' action='/test')
-            button.btn.btn-primary(type='submit') Sign up
+        .h-100.d-flex.justify-content-center.align-items-center
+            .btn-group-vertical
+                h1 Hi #{username}
+                h3 Your Information
+                h5 Age: #{age}
+                h5 Gender: #{gender}
+                button#add.btn.btn-dark Add daily symptom
+                p
+                #add_div(style='display: none')
+                    form(action='/add', method='post')
+                        label.badge.badge-dark(for='date') Date
+                        p
+                        input#date(type='date', name='date', value='2020-05-24', min='2020-05-24', max='2021-12-31')
+                        p
+                        .form-group
+                            label.badge.badge-dark Symptom
+                            div
+                                label.radio-inline
+                                    input(type='radio', name='symptom', value='Fever', required='')
+                                    | Fever
+                            div
+                                label.radio-inline
+                                    input(type='radio', name='symptom', value='Dry Cough', required='')
+                                    | Dry Cough
+                            div
+                                label.radio-inline
+                                    input(type='radio', name='symptom', value='Tiredness', required='')
+                                    | Tiredness
+                            div
+                                label.radio-inline
+                                    input(type='radio', name='symptom', value='None', required='')
+                                    | None
+                        p
+                        input.btn.btn-dark(type='submit', name='add', value='Add')
+                    p
+                form(action='/monitor', method='post')
+                    input.btn.btn-dark(type='submit', name='monitor', value='Monitor Symptoms')
+                p
+                p
+                p
+                form(action='/', method='get')
+                    input.btn.btn-dark(type='submit', name='logout', value='Logout')
+
+        script.
+            $('#add').on('click', function(event) {
+                var x = document.getElementById("add_div");
+                if (x.style.display === "none") {
+                    x.style.display = "block";
+                } else {
+                    x.style.display = "none";
+                }
+            });
