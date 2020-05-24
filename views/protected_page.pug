@@ -49,14 +49,20 @@ html(lang='en')
                 #monitor_div(style='display: none')
                     h5 Symptoms
                     p
-                        if (symptoms.length == 0)
+                        -var count = 0;
+                        -var symptom_list = ["Fever","Dry Cough","Tiredness"];
+                        if (symptoms.length === 0)
                             label="No symptoms to show"
                         else
                             each dict in symptoms
                                 each val, key in dict
                                     label.badge.badge-dark= key + ': '
                                     label= val
+                                    -if (symptom_list.includes(val))
+                                        -count = count+1;
                                 p
+                        if (count > 3)
+                            label.badge.badge-warning= "!!! You should see a doctor !!!"
                 p
                 p
                 p
