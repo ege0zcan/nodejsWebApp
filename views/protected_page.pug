@@ -14,15 +14,6 @@ html(lang='en')
                 h3 Your Information
                 h5 Age: #{age}
                 h5 Gender: #{gender}
-                h5 Symptoms
-                if (symptoms.length==0)
-                    label="No symptoms to show"
-                else
-                    each dict in symptoms
-                        each val, key in dict
-                            label.badge.badge-dark= key + ': '
-                            label=val
-                        p
 
                 button#add.btn.btn-dark Add daily symptom
                 p
@@ -53,8 +44,19 @@ html(lang='en')
                         p
                         input.btn.btn-dark(type='submit', name='add', value='Add')
                     p
-                form(action='/monitor', method='post')
-                    input.btn.btn-dark(type='submit', name='monitor', value='Monitor Symptoms')
+
+                input#monitor.btn.btn-dark(type='submit', name='monitor', value='Monitor Symptoms')
+                #monitor_div(style='display: none')
+                    h5 Symptoms
+                    p
+                        if (symptoms.length == 0)
+                            label="No symptoms to show"
+                        else
+                            each dict in symptoms
+                                each val, key in dict
+                                    label.badge.badge-dark= key + ': '
+                                    label= val
+                                p
                 p
                 p
                 p
@@ -64,6 +66,14 @@ html(lang='en')
         script.
             $('#add').on('click', function(event) {
                 var x = document.getElementById("add_div");
+                if (x.style.display === "none") {
+                    x.style.display = "block";
+                } else {
+                    x.style.display = "none";
+                }
+            });
+            $('#monitor').on('click', function (event) {
+                var x = document.getElementById("monitor_div");
                 if (x.style.display === "none") {
                     x.style.display = "block";
                 } else {

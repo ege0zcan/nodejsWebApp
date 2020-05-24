@@ -34,6 +34,37 @@ app.get('/protected_page', function(req, res){
     res.render('protected_page', info)
 });
 
+
+// Main page
+app.get('/', function (req, res) {
+    res.send(readFileSync('./main.html', 'utf8') );
+});
+
+// Login
+app.post('/login', function (req, res) {
+    var userData = {
+        username: req.body.username,
+        password: req.body.password,
+    };
+
+    MongoClient.connect(url, function(err, client) {
+        const db = client.db("covid_app");
+        const collection = db.collection('users');
+        if (err) throw err;
+        collection.findOne(userData, function(err, data) {
+            if (data && !err) {
+                req.session.user = data;
+                console.log(data);
+                //res.redirect('/profile');
+                res.redirect('/protected_page');
+            } else {
+                console.log(err);
+                res.redirect('/');
+            }
+        });
+    });
+});
+
 // Create account
 app.post('/create', function (req, res) {
     // Create record
@@ -64,46 +95,6 @@ app.post('/create', function (req, res) {
     });
 });
 
-// Login
-app.post('/login', function (req, res) {
-    var userData = {
-        username: req.body.username,
-        password: req.body.password,
-    };
-
-    MongoClient.connect(url, function(err, client) {
-        const db = client.db("covid_app");
-        const collection = db.collection('users');
-        if (err) throw err;
-        collection.findOne(userData, function(err, data) {
-            if (data && !err) {
-                req.session.user = data;
-                console.log(data);
-                //res.redirect('/profile');
-                res.redirect('/protected_page');
-            } else {
-                console.log(err);
-                res.redirect('/');
-            }
-        });
-    });
-});
-
-// Main page
-app.get('/', function (req, res) {
-    res.send(readFileSync('./main.html', 'utf8') );
-});
-
-// Profile page todo delete
-app.get('/profile', function (req, res) {
-    res.send(readFileSync('./profile.html', 'utf8') );
-});
-
-// Monitor symptoms
-app.post('/monitor', function (req, res) {
-    //todo
-    res.redirect('/protected_page');
-});
 
 // Add symptom
 app.post('/add', function (req, res) {
@@ -116,6 +107,7 @@ app.post('/add', function (req, res) {
         collection.updateOne({username: req.session.user.username}
             , { $push: {symptoms:symptom}}, function(err, result) {
                 if(err) throw err;
+                //todo update session info
             });
     });
     // Go back to profile page
