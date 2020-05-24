@@ -34,7 +34,6 @@ app.get('/protected_page', function(req, res){
     res.render('protected_page', info)
 });
 
-
 // Main page
 app.get('/', function (req, res) {
     res.send(readFileSync('./main.html', 'utf8') );
@@ -54,8 +53,6 @@ app.post('/login', function (req, res) {
         collection.findOne(userData, function(err, data) {
             if (data && !err) {
                 req.session.user = data;
-                console.log(data);
-                //res.redirect('/profile');
                 res.redirect('/protected_page');
             } else {
                 console.log(err);
