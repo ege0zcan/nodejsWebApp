@@ -58,7 +58,7 @@ html(lang='en')
                                 each val, key in dict
                                     label.badge.badge-dark= key + ': '
                                     label= val
-                                    -if (symptom_list.includes(val))
+                                    if (symptom_list.includes(val))
                                         -count = count+1;
                                 p
                         if (count > 3)
