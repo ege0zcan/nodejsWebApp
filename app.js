@@ -92,11 +92,9 @@ app.post('/create', function (req, res) {
     });
 });
 
-
-// Add symptom
+// Add symptoms to user
 app.post('/add', function (req, res) {
-    // Add symptoms to user
-    MongoClient.connect(url, function(err, client) {
+    MongoClient.connect(url, function(err, client, next) {
         const db = client.db("covid_app");
         const collection = db.collection('users');
         if (err) throw err;
@@ -104,11 +102,12 @@ app.post('/add', function (req, res) {
         collection.updateOne({username: req.session.user.username}
             , { $push: {symptoms:symptom}}, function(err, result) {
                 if(err) throw err;
-                //todo update session info
+                // Update session info
+                req.session.user.symptoms.push(symptom);
+                // Go back to profile page
+                res.redirect('/protected_page');
             });
     });
-    // Go back to profile page
-    res.redirect('/protected_page');
 });
 
 app.listen(3000);
