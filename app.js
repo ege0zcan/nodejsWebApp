@@ -55,7 +55,6 @@ app.post('/login', function (req, res) {
                 req.session.user = data;
                 res.redirect('/protected_page');
             } else {
-                console.log(err);
                 res.redirect('/');
             }
         });
@@ -80,9 +79,7 @@ app.post('/create', function (req, res) {
         if (err) throw err;
         collection.insertOne(userData, function(error, result) {
             if (error){
-                res.status("400");
-                res.send("Invalid details!");
-                throw error;
+                res.redirect('/');
             }
             else{
                 req.session.user = userData;
