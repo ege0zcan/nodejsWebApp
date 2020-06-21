@@ -15,7 +15,7 @@ A website that allows people to create accounts and keep track of their daily sy
 
     `brew install mongodb-community@4.2`
 
-Detailed instructions can be found [here](https://docs.mongodb.com/manual/administration/install-community/)
+    Detailed instructions can be found [here](https://docs.mongodb.com/manual/administration/install-community/)
 
 - Create a database called "covid_app" in mongo and create a collection called "users":
 
