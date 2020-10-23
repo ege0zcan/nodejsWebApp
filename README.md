@@ -8,10 +8,10 @@ A website that allows people to create accounts and keep track of their daily sy
 
 ## Requirements
 - Have MongoDB installed. In MacOS this can be achieved with the commands: 
-
-    `brew tap mongodb/brew`
-
-    `brew install mongodb-community@4.2`
+    ```
+    brew tap mongodb/brew
+    brew install mongodb-community@4.2
+    ```
 
     Detailed instructions can be found [here](https://docs.mongodb.com/manual/administration/install-community/)
 
@@ -26,18 +26,14 @@ A website that allows people to create accounts and keep track of their daily sy
     `db.createCollection('users')`
 
 - Download the npm packages:
-
-    `npm i express`
-
-    `npm i express-session`
-
-    `npm i mongodb`
-
-    `npm i body-parser`
-
-    `npm i pug`
-
-    `npm i istanbul`
+    ```
+    npm i express
+    npm i express-session
+    npm i mongodb
+    npm i body-parser
+    npm i pug
+    npm i istanbul
+    ```
 
 - A webdriver (e.g. Chromedriver) is needed for unit tests 
 
