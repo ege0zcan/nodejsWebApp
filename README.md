@@ -1,5 +1,3 @@
-
-# IstanbulTestCoverage
 A website that allows people to create accounts and keep track of their daily symptoms for COVID-19.  
 - **MongoDB** used as database
 - **Bootstrap** used as CSS framework
